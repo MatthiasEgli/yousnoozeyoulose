@@ -1,0 +1,8 @@
+*.pyc
+web-frontend/node_modules
+web-frontend/app/bower_components
+web-frontend/.tmp
+web-frontend/.sass-cache
+web-frontend/dist
+*.sublime-project
+*.sublime-workspace
