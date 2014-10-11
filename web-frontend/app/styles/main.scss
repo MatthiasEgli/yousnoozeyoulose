@@ -14,6 +14,10 @@
  */
 @import 'components/components';
 
+.selectize-control > .selectize-dropdown {
+  top: 36px;
+}
+
 html,
 body {
   width: 100%;

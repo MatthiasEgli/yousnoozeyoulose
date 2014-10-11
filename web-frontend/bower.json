@@ -16,6 +16,9 @@
   "dependencies": {
     "angular": "~1.2.26",
     "ui-router": "~0.2.11",
-    "angular-payments": "*"
+    "angular-payments": "*",
+    "restangular": "~1.4.0",
+    "angular-ui-select": "~0.8.2",
+    "selectize": "~0.11.2"
   }
 }

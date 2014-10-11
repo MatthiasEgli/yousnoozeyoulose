@@ -1,25 +1,38 @@
-<form stripe-form="handleStripe" name="myForm">
-  <div class="span3">
-    <label for="">Card number</label>
-    <input type="text" class="input-block-level" ng-model="number" payments-validate="card" payments-format="card" payments-type-model="type" ng-class="myForm.number.$card.type"/>
+<div class="g-medium--half">
+<h1>Top up your account!</h1>
+<h2>Your balance is {{balance.balance/100 | currency:'CHF '}} </h2>
+<form stripe-form="handleStripe" name="stripeForm">
+<div class="g--half">
+  <div>
+    <label for="">Card number</label><br>
+    <input type="text" class="input-block-level" ng-model="number" payments-validate="card" payments-format="card" payments-type-model="type" ng-class="stripeForm.number.$card.type" placeholder="xxxx xxxx xxxx xxxx"/>
   </div>
   
-  <div class="span1">
-    <label for="">Expiry</label>
-    <input type="text" class="input-block-level" ng-model="expiry" payments-validate="expiry" payments-format="expiry" />
+  <div>
+    <label for="">Expiry</label><br>
+    <input type="text" class="input-block-level" ng-model="expiry" payments-validate="expiry" payments-format="expiry" placeholder="MM/YYYY"/>
   </div>
   
-  <div class="span3">
-    <label for="">Name on card </label>
-    <input type="text" class="input-block-level">
+  <div>
+    <label for="">Name on card </label><br>
+    <input type="text" ng-model="cardholder" class="input-block-level">
   </div>
   
-  <div class="span1">
-    <label for="">CVC</label>
+  <div>
+    <label for="">CVC</label><br>
     <input type="text" class="input-block-level" ng-model="cvc" payments-validate="cvc" payments-format="cvc" payments-type-model="type"/>
   </div>
-  
-  <div class="span4">
-    <button type="submit" class="btn btn-primary btn-large">Submit</button>
+</div>
+<br>
+<div class="g--half g--last">
+  <div>
+    <label for="">Amount in CHF</label><br>
+    <input type="text" class="input-block-level" ng-model="amount" placeholder="10"/>
+    <p ng-show="amount">You are going to transfer {{amount | currency:'CHF '}} to your alarm!</p>
   </div>
+
+  <button type="submit" class="button--primary" ng-click="charging = true">{{charging ? 'charging... please wait!' : 'Make it happen!'}}</button>
+</div>
+
 </form>
+</div>

@@ -1,1 +1,12 @@
-Choose
+<h1>Choose your Charity</h1>
+<br>
+<div class="g--half">
+  <ui-select ng-model="chd.selected" theme="selectize" on-select="save($item)" style="width: 300px;">
+    <ui-select-match placeholder="Select a charity">
+      {{$select.selected.name}}
+    </ui-select-match>
+    <ui-select-choices repeat="chd in charities | filter: $select.search">
+      <span ng-bind-html="trustAsHtml((chd.name | highlight: $select.search))"></span>
+    </ui-select-choices>
+  </ui-select>
+</div>

@@ -51,7 +51,7 @@
 
 Stripe.setPublishableKey('pk_test_sqyMF8VmsGm0H9G3guOLdjZ4');
 
-var myApp = angular.module('myApp', ['ui.router', 'angularPayments']);
+var myApp = angular.module('myApp', ['ui.router', 'angularPayments', 'restangular', 'ui.select']);
 
 myApp.config(function($stateProvider, $urlRouterProvider) {
   //
@@ -68,6 +68,7 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     .state('choose', {
       url: "/choose",
       templateUrl: "views/choose.html",
+      controller: 'ChooseController',
     })
     .state('login', {
       url: "/login",
@@ -75,14 +76,58 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     });
 });
 
-myApp.controller('ChargeController', function($scope) {
+myApp.config(function(RestangularProvider) {
+  RestangularProvider.setBaseUrl('http://localhost:5000/');
+});
+
+myApp.run(function($rootScope, Restangular) {
+  Restangular.one("balance").get().then(function(res) {
+    $rootScope.balance = res.balance;
+  });
+  Restangular.one("charities").get().then(function(res) {
+    $rootScope.charity = res.charity;
+  });
+});
+
+myApp.controller('ChargeController', function($scope, Restangular, $http, $rootScope) {
   $scope.handleStripe = function(status, response){
     if(response.error) {
       console.log("error");
     } else {
-      console.log("success");
-      // got stripe token, now charge it or smt
       token = response.id;
+      $rootScope.balance = Restangular.all("balance").post({
+        "amount": $scope.amount*100,
+        "token": token
+      }).then(function(res) {
+        $scope.charging = false;
+        $rootScope.balance = res.balance;
+      });
     }
+  };
+
+  $scope.charging = false;
+
+  // Example Data
+  $scope.number = "4242424242424242";
+  $scope.expiry = "12/2015";
+  $scope.cardholder = "Sleepy Hollow";
+  $scope.cvc = "123";
+  $scope.amount = 10;
+});
+
+myApp.controller('ChooseController', function($scope, $http, $sce, Restangular, $rootScope) {
+  $http.get('views/charities.json')
+    .then(function(res){
+      $scope.charities = res.data.charities;
+    });
+
+  $scope.trustAsHtml = function(value) {
+    return $sce.trustAsHtml(value);
+  };
+
+  $scope.save = function(item) {
+    Restangular.all("charities").post({charity: item.name}).then(function(res) {
+      $rootScope.charity = res.charity;
+    });
   };
 });
