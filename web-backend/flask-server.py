@@ -1,7 +1,6 @@
 from flask import Flask
 from flask.ext import restful
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.restful import abort
 from flask.ext.restful import reqparse
 import stripe
 from flask.ext.cors import CORS
@@ -101,7 +100,10 @@ class Snooze(restful.Resource):
     def get(self):
         user = Users.query.all()[0]
         if user.balance <= 0:
-            abort(400, message="Out of money!")
+            return {
+                'balance': user.balance,
+                'cost_last_snooze': 0,
+            }
         else:
             current_cost = cost
             for t in user.transfers:

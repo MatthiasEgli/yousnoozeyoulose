@@ -1,6 +1,6 @@
 <div class="g-medium--half">
-<h1>Top up your account!</h1>
-<h2>Your balance is {{balance.balance/100 | currency:'CHF '}} </h2>
+<h1>Top up your account</h1>
+<h2>Your balance is {{balance ? balance/100 : 0 | currency:'CHF '}} </h2>
 <form stripe-form="handleStripe" name="stripeForm">
 <div class="g--half">
   <div>
